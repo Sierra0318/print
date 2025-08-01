@@ -28,17 +28,13 @@ const WebPrinterApp = {
   cacheElements() {
       this.elements = {
           form: document.getElementById('print-form'),
-          previewFrontUrl: document.getElementById('preview-front-url'),
-          previewBackUrl: document.getElementById('preview-back-url'),
-          printFrontUrl: document.getElementById('print-front-url'),
-          printBackUrl: document.getElementById('print-back-url'),
+          previewUrl: document.getElementById('preview-url'),
+          printUrl: document.getElementById('print-url'),
           paperWidth: document.getElementById('paper-width'),
           paperHeight: document.getElementById('paper-height'),
           printBtn: document.getElementById('print-btn'),
           status: document.getElementById('status'),
-          installNotice: document.getElementById('install-notice'),
-          statusIndicator: document.getElementById('status-indicator'),
-          connectionStatus: document.getElementById('connection-status')
+          installNotice: document.getElementById('install-notice')
       };
   },
 
@@ -48,8 +44,6 @@ const WebPrinterApp = {
           e.preventDefault();
           this.startPrint();
       });
-
-
 
       // Enter key shortcut
       document.addEventListener('keydown', (e) => {
@@ -100,45 +94,27 @@ const WebPrinterApp = {
       return null;
   },
 
-  // Update connection status
-  updateConnectionStatus(isConnected) {
-      const indicator = this.elements.statusIndicator;
-      const statusText = this.elements.connectionStatus;
-      
-      if (isConnected) {
-          indicator.className = 'status-indicator connected';
-          statusText.textContent = '연결됨';
-          this.elements.installNotice.style.display = 'none';
-      } else {
-          indicator.className = 'status-indicator disconnected';
-          statusText.textContent = '연결 안됨';
-          this.elements.installNotice.style.display = 'block';
-      }
-  },
-
   // Check WebPrinter on load
   async checkWebPrinter() {
       const port = await this.findWebPrinter();
       if (port) {
           this.showStatus('WebPrinter가 실행 중입니다', 'success');
           this.state.webPrinterPort = port;
-          this.updateConnectionStatus(true);
+          this.elements.installNotice.style.display = 'none';
       } else {
-          this.updateConnectionStatus(false);
+          this.elements.installNotice.style.display = 'block';
       }
   },
 
   // Validate form inputs
   validateInputs() {
-      const previewFrontUrl = this.elements.previewFrontUrl.value.trim();
-      const previewBackUrl = this.elements.previewBackUrl.value.trim();
-      const printFrontUrl = this.elements.printFrontUrl.value.trim();
-      const printBackUrl = this.elements.printBackUrl.value.trim();
+      const previewUrl = this.elements.previewUrl.value.trim();
+      const printUrl = this.elements.printUrl.value.trim();
       const paperWidth = parseFloat(this.elements.paperWidth.value);
       const paperHeight = parseFloat(this.elements.paperHeight.value);
 
-      if (!previewFrontUrl && !printFrontUrl) {
-          this.showStatus('최소한 앞면 URL을 입력하세요.', 'error');
+      if (!previewUrl && !printUrl) {
+          this.showStatus('URL을 입력하세요.', 'error');
           return null;
       }
 
@@ -147,7 +123,7 @@ const WebPrinterApp = {
           return null;
       }
 
-      return { previewFrontUrl, previewBackUrl, printFrontUrl, printBackUrl, paperWidth, paperHeight };
+      return { previewUrl, printUrl, paperWidth, paperHeight };
   },
 
   // Send data to WebPrinter
@@ -159,14 +135,12 @@ const WebPrinterApp = {
           },
           body: JSON.stringify({
               session: sessionId,
-              front_preview_url: data.previewFrontUrl,
-              back_preview_url: data.previewBackUrl,
-              front_print_url: data.printFrontUrl,
-              back_print_url: data.printBackUrl,
+              preview_url: data.previewUrl,
+              print_url: data.printUrl,
               paper_width: data.paperWidth,
               paper_height: data.paperHeight,
               paper_size: 'Custom',
-              print_selector: '.print_wrap'
+              print_selector: '#print_wrap'
           })
       });
 
@@ -218,11 +192,11 @@ const WebPrinterApp = {
           await this.sendToWebPrinter(port, sessionId, data);
           
           this.showStatus('✅ 인쇄 정보를 전송했습니다!', 'success');
-          this.updateConnectionStatus(true);
+          this.elements.installNotice.style.display = 'none';
 
       } catch (error) {
           this.showStatus(`❌ ${error.message}`, 'error');
-          this.updateConnectionStatus(false);
+          this.elements.installNotice.style.display = 'block';
       } finally {
           this.state.isConnecting = false;
           this.elements.printBtn.disabled = false;
