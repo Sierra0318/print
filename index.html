@@ -10,87 +10,45 @@
     <div class="container">
         <header class="header">
             <h1>🖨️ WebPrinter</h1>
-            <p>웹에서 바로 인쇄하기</p>
+            <p>간단 테스트</p>
         </header>
-        
+
         <main class="content">
             <section class="app-status" aria-live="polite">
-                <h2>앱 상태</h2>
-                <div class="status-grid">
-                    <div class="info-line"><span class="label">상태</span><span id="app-status" class="value">확인 중...</span></div>
-                    <div class="info-line"><span class="label">포트</span><span id="app-port" class="value">-</span></div>
-                    <div class="info-line"><span class="label">버전</span><span id="app-version" class="value">-</span></div>
-                    <div class="info-line"><span class="label">최근 세션</span><span id="last-session" class="value">-</span></div>
-                </div>
+                <div class="info-line"><span class="label">앱상태</span><span id="app-status" class="value">확인 중...</span></div>
+                <div class="info-line"><span class="label">설치된 버전</span><span id="app-version" class="value">-</span></div>
+                <div class="info-line"><span class="label">신규 버전</span><span id="latest-version" class="value">-</span></div>
                 <div class="status-actions">
-                    <button type="button" class="btn btn-secondary" id="refresh-status">🔄 상태 새로고침</button>
-                    <button type="button" class="btn btn-secondary" id="test-protocol">🧪 프로토콜 테스트</button>
-                </div>
-                <div class="protocol-hint" id="protocol-hint" style="display:none;">
-                    <span>프로토콜 링크:</span>
-                    <a id="protocol-link" href="#" target="_blank" rel="noopener">webprinter://print?session=...</a>
+                    <button type="button" class="btn btn-secondary" id="refresh-status">상태 새로고침</button>
+                    <button type="button" class="btn btn-secondary" id="btn-update-now">지금 업데이트</button>
                 </div>
             </section>
+
             <form id="print-form" class="print-form">
                 <div class="form-group">
-                    <label for="preview-url">미리보기 URL:</label>
-                    <input type="url" id="preview-url" class="form-input" 
-                           placeholder="https://example.com/preview" 
-                           value="https://print-seven-nu.vercel.app/team/team1/preview/front/key123">
+                    <label for="tour-id">투어번호</label>
+                    <input type="number" id="tour-id" class="form-input" placeholder="예) 1" value="1">
                 </div>
-                
-                <div class="form-group">
-                    <label for="print-url">인쇄 URL:</label>
-                    <input type="url" id="print-url" class="form-input"
-                           placeholder="https://example.com/print" 
-                           value="https://print-seven-nu.vercel.app/team/team1/preview/print/key123">
-                </div>
-               
-                <div class="size-group">
-                    <div class="form-group">
-                        <label for="paper-width">가로 (mm):</label>
-                        <input type="number" id="paper-width" class="form-input"
-                               value="88" min="10" max="1000">
-                    </div>
-                    <div class="form-group">
-                        <label for="paper-height">세로 (mm):</label>
-                        <input type="number" id="paper-height" class="form-input"
-                               value="244" min="10" max="1000">
-                    </div>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" id="print-btn">
-                    🖨️ 출력하기
-                </button>
-            </form>
-            
-            <div class="status" id="status"></div>
-            
-            <div class="install-notice" id="install-notice">
-                <h3>📥 WebPrinter 설치 필요</h3>
-                <p>WebPrinter가 설치되지 않았습니다.</p>
-                <p>
-                    <a href="https://github.com/code-x-team/webprint-electron/releases/latest" 
-                       target="_blank" class="download-link">
-                        여기에서 다운로드
-                    </a>하여 설치 후 다시 시도하세요.
-                </p>
-            </div>
-            
-            <div class="info-box">
-                <h4>테스트 방법:</h4>
-                <ol>
-                    <li>WebPrinter가 설치되어 있어야 합니다</li>
-                    <li>URL을 입력하거나 기본값을 사용하세요</li>
-                    <li>용지 크기를 설정하세요</li>
-                    <li>"출력하기" 버튼을 클릭하세요</li>
-                </ol>
-            </div>
 
-            <div class="logs-container">
-                <h4>로그</h4>
-                <pre id="logs" class="logs"></pre>
-            </div>
+                <div class="form-group">
+                    <label for="nation">국가</label>
+                    <select id="nation" class="form-input">
+                        <option value="cn">cn</option>
+                        <option value="ja">ja</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>면</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="side" value="front" checked> 앞면</label>
+                        <label class="radio-label"><input type="radio" name="side" value="back"> 뒷면</label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="print-btn" disabled>출력하기</button>
+                <div class="status" id="status" style="display:none;"></div>
+            </form>
         </main>
     </div>
 
