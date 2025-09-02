@@ -219,7 +219,7 @@ const WebPrinterApp = {
               print_url: data.printUrl,
               paper_width: data.paperWidth,
               paper_height: data.paperHeight,
-              paper_size: 'Custom',
+              paper_size: data.paperSizeName || 'Custom',
               print_selector: '#print_wrap'
           })
       });
@@ -269,12 +269,18 @@ const WebPrinterApp = {
           // 3) 세션 생성 및 창 오픈
           const sessionId = this.openProtocol('open');
 
-          // 4) 인쇄 데이터 전송 (A4 기본 mm 예시)
+          // 4) 인쇄 데이터 전송: 국가별 고정 용지 사이즈(mm)
+          const nationPaperMap = {
+            cn: { width: 88, height: 244, name: 'CN' },
+            ja: { width: 93, height: 163, name: 'JA' }
+          };
+          const paper = nationPaperMap[nation] || { width: 210, height: 297, name: 'Custom' };
           await this.sendToWebPrinter(port, sessionId, {
               previewUrl,
               printUrl,
-              paperWidth: 210,
-              paperHeight: 297
+              paperWidth: paper.width,
+              paperHeight: paper.height,
+              paperSizeName: paper.name
           });
           
           this.showStatus('✅ 인쇄 정보를 전송했습니다!', 'success');

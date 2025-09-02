@@ -11,12 +11,20 @@
   const BASE_URL = 'https://storage.googleapis.com/tour-gov/code-x-team/webprint-electron/latest';
   const DEFAULT_DOWNLOAD_URL = BASE_URL;
 
-  // CORS 에러를 피하기 위해 텍스트 미러를 통해 latest.yml을 조회
+  // CORS 우회 미러 + 캐시 회피(실시간 정보 강제)
   async function fetchText(url, timeout = 3000) {
     try {
       const controller = AbortSignal?.timeout ? { signal: AbortSignal.timeout(timeout) } : {};
-      const mirror = (url.startsWith('https://') ? 'https://r.jina.ai/' : 'https://r.jina.ai/http://') + url.replace(/^https?:\/\//, '');
-      const res = await fetch(mirror, { method: 'GET', ...(controller || {}) });
+      const base = (url.startsWith('https://') ? 'https://r.jina.ai/' : 'https://r.jina.ai/http://') + url.replace(/^https?:\/\//, '');
+      const ts = Date.now();
+      const sep = base.includes('?') ? '&' : '?';
+      const mirror = `${base}${sep}__ts=${ts}`;
+      const res = await fetch(mirror, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { 'cache-control': 'no-cache', 'pragma': 'no-cache' },
+        ...(controller || {})
+      });
       if (!res.ok) return null;
       return await res.text();
     } catch { return null; }
@@ -33,6 +41,7 @@
   }
 
   async function getLatestInfo() {
+    // 캐시 회피 쿼리 추가로 항상 최신 조회
     const ymlUrl = BASE_URL + '/latest.yml';
     const exeAliasUrl = BASE_URL + '/WebPrinter-Setup.exe';
     const ymlText = await fetchText(ymlUrl);
