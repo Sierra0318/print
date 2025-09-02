@@ -45,6 +45,55 @@ body {
   padding: 2rem;
 }
 
+/* App Status */
+.app-status {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+.app-status h2 {
+  font-size: 1.1rem;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.info-line {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+
+.info-line .label {
+  color: #6b7280;
+}
+
+.info-line .value {
+  color: #111827;
+  font-weight: 600;
+}
+
+.status-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.protocol-hint {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
 /* Form */
 .print-form {
   margin-bottom: 1.5rem;
@@ -188,6 +237,22 @@ body {
 
 .info-box li {
   margin-bottom: 0.25rem;
+}
+
+/* Logs */
+.logs-container {
+  margin-top: 1rem;
+}
+
+.logs {
+  background: #0b1020;
+  color: #d1d5db;
+  border-radius: 6px;
+  padding: 0.75rem;
+  max-height: 180px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
 }
 
 /* Animations */

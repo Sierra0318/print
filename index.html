@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebPrinter 테스트</title>
+    <title>WebPrinter 연동 테스트</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,6 +14,23 @@
         </header>
         
         <main class="content">
+            <section class="app-status" aria-live="polite">
+                <h2>앱 상태</h2>
+                <div class="status-grid">
+                    <div class="info-line"><span class="label">상태</span><span id="app-status" class="value">확인 중...</span></div>
+                    <div class="info-line"><span class="label">포트</span><span id="app-port" class="value">-</span></div>
+                    <div class="info-line"><span class="label">버전</span><span id="app-version" class="value">-</span></div>
+                    <div class="info-line"><span class="label">최근 세션</span><span id="last-session" class="value">-</span></div>
+                </div>
+                <div class="status-actions">
+                    <button type="button" class="btn btn-secondary" id="refresh-status">🔄 상태 새로고침</button>
+                    <button type="button" class="btn btn-secondary" id="test-protocol">🧪 프로토콜 테스트</button>
+                </div>
+                <div class="protocol-hint" id="protocol-hint" style="display:none;">
+                    <span>프로토콜 링크:</span>
+                    <a id="protocol-link" href="#" target="_blank" rel="noopener">webprinter://print?session=...</a>
+                </div>
+            </section>
             <form id="print-form" class="print-form">
                 <div class="form-group">
                     <label for="preview-url">미리보기 URL:</label>
@@ -26,7 +43,7 @@
                     <label for="print-url">인쇄 URL:</label>
                     <input type="url" id="print-url" class="form-input"
                            placeholder="https://example.com/print" 
-                           value="https://print-seven-nu.vercel.app/team/team1/print/front/key123">
+                           value="https://print-seven-nu.vercel.app/team/team1/preview/print/key123">
                 </div>
                
                 <div class="size-group">
@@ -69,9 +86,17 @@
                     <li>"출력하기" 버튼을 클릭하세요</li>
                 </ol>
             </div>
+
+            <div class="logs-container">
+                <h4>로그</h4>
+                <pre id="logs" class="logs"></pre>
+            </div>
         </main>
     </div>
 
+    <script src="js/detector.js"></script>
+    <script src="js/installer.js"></script>
+    <script src="js/launcher.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
